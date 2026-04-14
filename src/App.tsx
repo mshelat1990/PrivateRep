@@ -69,13 +69,13 @@ export default function App() {
               </div>
             </div>
 
-            {rightTab !== "atrisk" && (
-              <div className="grid grid-cols-3 px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider border-b border-white/5 bg-slate-900/80">
-                <span>Stock</span>
-                <span className="text-right">Return (%)</span>
-                <span className="text-right">Performance</span>
-              </div>
-            )}
+            {/* {rightTab !== "atrisk" && (
+              // <div className="grid grid-cols-3 px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider border-b border-white/5 bg-slate-900/80">
+              //   <span>Stock</span>
+              //   <span className="text-right">Return (%)</span>
+              //   <span className="text-right">Performance</span>
+              // </div>
+            )} */}
 
             <div className="flex-1 overflow-hidden">
               {rightTab === "stock" && <StockPerformanceTable />}
