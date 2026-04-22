@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { X, AlertTriangle } from "lucide-react";
+import { X, AlertTriangle, BarChart3 } from "lucide-react";
 import StockAllocationMap from "./components/StockAllocationMap";
 import StockPerformanceTable from "./components/StockPerformanceTable";
 import SectorPerformanceTable from "./components/SectorPerformanceTable";
 import AtRiskTab from "./components/AtRiskTab";
+import PerformanceTab from "./components/PerformanceTab";
 import { getAtRiskStocks } from "./data/stocks";
 
-type RightTab = "stock" | "sector" | "atrisk";
+type RightTab = "stock" | "sector" | "atrisk" | "performance";
 
 export default function App() {
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
@@ -34,8 +35,8 @@ export default function App() {
 
           <div className="flex flex-col w-[380px] flex-shrink-0 bg-slate-900">
             <div className="px-5 pt-4 pb-0 border-b border-white/8">
-              <h2 className="text-sm font-semibold text-white tracking-wide mb-3">Stock Performance</h2>
-              <div className="flex gap-1">
+              <h2 className="text-sm font-semibold text-white tracking-wide mb-3">Analysis</h2>
+              <div className="flex gap-1 flex-wrap">
                 <TabButton
                   label="Stock"
                   active={rightTab === "stock"}
@@ -46,6 +47,17 @@ export default function App() {
                   active={rightTab === "sector"}
                   onClick={() => setRightTab("sector")}
                 />
+                <button
+                  onClick={() => setRightTab("performance")}
+                  className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-t-lg transition-all ${
+                    rightTab === "performance"
+                      ? "bg-amber-500/15 text-amber-300 border-b-2 border-amber-400"
+                      : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
+                  }`}
+                >
+                  <BarChart3 className="w-3 h-3" />
+                  Performance
+                </button>
                 <button
                   onClick={() => setRightTab("atrisk")}
                   className={`relative flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-t-lg transition-all ${
@@ -78,8 +90,27 @@ export default function App() {
             )} */}
 
             <div className="flex-1 overflow-hidden">
-              {rightTab === "stock" && <StockPerformanceTable />}
-              {rightTab === "sector" && <SectorPerformanceTable />}
+              {rightTab === "stock" && (
+                <>
+                  <div className="grid grid-cols-3 px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider border-b border-white/5 bg-slate-900/80">
+                    <span>Stock</span>
+                    <span className="text-right">Return (%)</span>
+                    <span className="text-right">Performance</span>
+                  </div>
+                  <StockPerformanceTable />
+                </>
+              )}
+              {rightTab === "sector" && (
+                <>
+                  <div className="grid grid-cols-3 px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider border-b border-white/5 bg-slate-900/80">
+                    <span>Sector</span>
+                    <span className="text-right">Avg Return</span>
+                    <span className="text-right">Allocation</span>
+                  </div>
+                  <SectorPerformanceTable />
+                </>
+              )}
+              {rightTab === "performance" && <PerformanceTab />}
               {rightTab === "atrisk" && <AtRiskTab />}
             </div>
           </div>
