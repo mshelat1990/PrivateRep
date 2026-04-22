@@ -4,7 +4,7 @@ import StockAllocationMap from "./components/StockAllocationMap";
 import StockPerformanceTable from "./components/StockPerformanceTable";
 import SectorPerformanceTable from "./components/SectorPerformanceTable";
 import AtRiskTab from "./components/AtRiskTab";
-import PerformanceTab from "./components/PerformanceTab";
+import PerformanceDrillDown from "./components/PerformanceDrillDown";
 import { getAtRiskStocks } from "./data/stocks";
 
 type RightTab = "stock" | "sector" | "atrisk" | "performance";
@@ -110,7 +110,7 @@ export default function App() {
                   <SectorPerformanceTable />
                 </>
               )}
-              {rightTab === "performance" && <PerformanceTab />}
+              {rightTab === "performance" && <PerformanceDrillDown />}
               {rightTab === "atrisk" && <AtRiskTab />}
             </div>
           </div>
