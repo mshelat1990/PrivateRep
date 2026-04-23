@@ -1,18 +1,38 @@
 import { useState } from "react";
-import { X, AlertTriangle, BarChart3 } from "lucide-react";
+import { X, AlertTriangle, BarChart3, Layout } from "lucide-react";
 import StockAllocationMap from "./components/StockAllocationMap";
 import StockPerformanceTable from "./components/StockPerformanceTable";
 import SectorPerformanceTable from "./components/SectorPerformanceTable";
 import AtRiskTab from "./components/AtRiskTab";
 import PerformanceDrillDown from "./components/PerformanceDrillDown";
+import PerformanceSummary from "./components/PerformanceSummary";
 import { getAtRiskStocks } from "./data/stocks";
 
-type RightTab = "stock" | "sector" | "atrisk" | "performance";
+type RightTab = "stock" | "sector" | "atrisk" | "performance" | "summary";
+type ViewMode = "dashboard" | "summary";
 
 export default function App() {
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
   const [rightTab, setRightTab] = useState<RightTab>("stock");
+  const [viewMode, setViewMode] = useState<ViewMode>("dashboard");
   const atRiskCount = getAtRiskStocks().length;
+
+  if (viewMode === "summary") {
+    return (
+      <div className="min-h-screen bg-white">
+        <div className="fixed top-0 right-0 z-50 p-4">
+          <button
+            onClick={() => setViewMode("dashboard")}
+            className="p-2 rounded-lg hover:bg-gray-200 transition-colors"
+            title="Back to dashboard"
+          >
+            <X className="w-5 h-5 text-gray-700" />
+          </button>
+        </div>
+        <PerformanceSummary />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 font-sans">
@@ -21,8 +41,12 @@ export default function App() {
           <div className="flex flex-col flex-1 min-w-0 border-r border-white/8">
             <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/8 bg-slate-900/80 backdrop-blur-sm">
               <h2 className="text-sm font-semibold text-white tracking-wide">Stocks and Sector Allocation</h2>
-              <button className="p-1 rounded-md hover:bg-white/10 transition-colors">
-                <X className="w-4 h-4 text-slate-400" />
+              <button
+                onClick={() => setViewMode("summary")}
+                className="p-1 rounded-md hover:bg-white/10 transition-colors"
+                title="Performance Summary"
+              >
+                <Layout className="w-4 h-4 text-slate-400 hover:text-slate-300" />
               </button>
             </div>
             <div className="flex-1 overflow-hidden">
