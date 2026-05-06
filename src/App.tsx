@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { X, AlertTriangle, BarChart3, Layout } from "lucide-react";
+import { X, AlertTriangle, BarChart3, LayoutGrid as Layout, Smartphone } from "lucide-react";
 import StockAllocationMap from "./components/StockAllocationMap";
 import StockPerformanceTable from "./components/StockPerformanceTable";
 import SectorPerformanceTable from "./components/SectorPerformanceTable";
 import AtRiskTab from "./components/AtRiskTab";
 import PerformanceDrillDown from "./components/PerformanceDrillDown";
 import PerformanceSummary from "./components/PerformanceSummary";
+import MobilePortfolio from "./components/MobilePortfolio";
 import { getAtRiskStocks } from "./data/stocks";
 
 type RightTab = "stock" | "sector" | "atrisk" | "performance" | "summary";
-type ViewMode = "dashboard" | "summary";
+type ViewMode = "dashboard" | "summary" | "mobile";
 
 export default function App() {
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
@@ -34,6 +35,23 @@ export default function App() {
     );
   }
 
+  if (viewMode === "mobile") {
+    return (
+      <div className="fixed top-0 left-0 right-0 bottom-0 z-50 overflow-hidden">
+        <div className="fixed top-0 left-0 right-0 z-50 p-4 bg-gradient-to-b from-slate-950 to-transparent">
+          <button
+            onClick={() => setViewMode("dashboard")}
+            className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+            title="Close mobile view"
+          >
+            <X className="w-5 h-5 text-slate-400" />
+          </button>
+        </div>
+        <MobilePortfolio />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 font-sans">
       <div className="w-full max-w-7xl h-[92vh] flex flex-col rounded-2xl overflow-hidden border border-white/8 shadow-2xl shadow-black/60 bg-slate-900">
@@ -41,13 +59,22 @@ export default function App() {
           <div className="flex flex-col flex-1 min-w-0 border-r border-white/8">
             <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/8 bg-slate-900/80 backdrop-blur-sm">
               <h2 className="text-sm font-semibold text-white tracking-wide">Stocks and Sector Allocation</h2>
-              <button
-                onClick={() => setViewMode("summary")}
-                className="p-1 rounded-md hover:bg-white/10 transition-colors"
-                title="Performance Summary"
-              >
-                <Layout className="w-4 h-4 text-slate-400 hover:text-slate-300" />
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setViewMode("mobile")}
+                  className="p-1 rounded-md hover:bg-white/10 transition-colors"
+                  title="Mobile Portfolio View"
+                >
+                  <Smartphone className="w-4 h-4 text-slate-400 hover:text-slate-300" />
+                </button>
+                <button
+                  onClick={() => setViewMode("summary")}
+                  className="p-1 rounded-md hover:bg-white/10 transition-colors"
+                  title="Performance Summary"
+                >
+                  <Layout className="w-4 h-4 text-slate-400 hover:text-slate-300" />
+                </button>
+              </div>
             </div>
             <div className="flex-1 overflow-hidden">
               <StockAllocationMap
